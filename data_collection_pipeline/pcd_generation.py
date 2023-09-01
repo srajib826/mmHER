@@ -1,5 +1,6 @@
 import sys
 import os
+import pickle
 import struct
 import time
 import numpy as np
@@ -247,6 +248,17 @@ if __name__ == '__main__':
         dopplerResult = dopplerFFT(rangeResult, frameConfig)
         pointCloud = frame2pointcloud(dopplerResult, pointCloudProcessCFG)
         frame_no += 1
-        print('Frame %d:' % (frame_no), pointCloud.shape)
+        #print('Frame %d:' % (frame_no), pointCloud.shape)
         raw_poincloud_data_for_plot.append(pointCloud)
+        #print(type(rangeResult))
+    # fileObj = open('pointCloud.pkl', 'wb')
+    # pickle.dump(pointCloud,fileObj)
+    # fileObj.close()
+
+    fileObj = open('pointCloud.pkl', 'rb')
+    exampleObj = pickle.load(fileObj)
+    fileObj.close()
+    print(exampleObj)
+    
     bin_reader.close()
+     
