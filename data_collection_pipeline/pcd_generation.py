@@ -251,14 +251,32 @@ if __name__ == '__main__':
         #print('Frame %d:' % (frame_no), pointCloud.shape)
         raw_poincloud_data_for_plot.append(pointCloud)
         #print(type(rangeResult))
-    # fileObj = open('pointCloud.pkl', 'wb')
-    # pickle.dump(pointCloud,fileObj)
-    # fileObj.close()
-
-    fileObj = open('pointCloud.pkl', 'rb')
-    exampleObj = pickle.load(fileObj)
+    fileObj = open('pointCloud.pkl', 'wb')
+    pickle.dump(pointCloud,fileObj)
     fileObj.close()
-    print(exampleObj)
+
+
+    fileObj = open('rangeResult.pkl', 'wb')
+    pickle.dump(rangeResult,fileObj)
+    fileObj.close()
+
+    fileObj = open('dopplerResult.pkl', 'wb')
+    pickle.dump(dopplerResult,fileObj)
+    fileObj.close()
+
+
+
+
+
+
+
+
+
+
+    # fileObj = open('pointCloud.pkl', 'rb')
+    # exampleObj = pickle.load(fileObj)
+    # fileObj.close()
+    # print(exampleObj)
     
     bin_reader.close()
      
