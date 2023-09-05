@@ -236,47 +236,72 @@ if __name__ == '__main__':
     shift_arr = cfg.MMWAVE_RADAR_LOC
     bin_reader = RawDataReader(bin_filename)
     frame_no = 0
+    pointcloud_list=[]
+    rangresult_list =[]
+    dopplerresult_list=[]
     for frame_no in range(total_frame_number):
         bin_frame = bin_reader.getNextFrame(pointCloudProcessCFG.frameConfig)
         np_frame = bin2np_frame(bin_frame)
         frameConfig = pointCloudProcessCFG.frameConfig
         reshapedFrame = frameReshape(np_frame, frameConfig)
         rangeResult = rangeFFT(reshapedFrame, frameConfig)
+        rangresult_list.append(rangeResult)
         if pointCloudProcessCFG.enableStaticClutterRemoval:
             rangeResult = clutter_removal(rangeResult, axis=2)
 
         dopplerResult = dopplerFFT(rangeResult, frameConfig)
+        dopplerresult_list.append(dopplerResult)
+
         pointCloud = frame2pointcloud(dopplerResult, pointCloudProcessCFG)
+        pointcloud_list.append(pointCloud)
         frame_no += 1
         #print('Frame %d:' % (frame_no), pointCloud.shape)
         raw_poincloud_data_for_plot.append(pointCloud)
-        #print(type(rangeResult))
-    fileObj = open('pointCloud.pkl', 'wb')
-    pickle.dump(pointCloud,fileObj)
-    fileObj.close()
+       # print(type(rangeResult))
+    # fileObj = open('pointCloud.pkl', 'wb')
+    # pickle.dump(pointCloud,fileObj)
+    # fileObj.close()
 
 
-    fileObj = open('rangeResult.pkl', 'wb')
-    pickle.dump(rangeResult,fileObj)
-    fileObj.close()
+    # fileObj = open('rangeResult.pkl', 'wb')
+    # pickle.dump(rangeResult,fileObj)
+    # fileObj.close()
 
-    fileObj = open('dopplerResult.pkl', 'wb')
-    pickle.dump(dopplerResult,fileObj)
-    fileObj.close()
+    # fileObj = open('dopplerResult.pkl', 'wb')
+    # pickle.dump(dopplerResult,fileObj)
+    # fileObj.close()
 
-
-
-
-
-
-
-
+    # fileObj = open('combine_result','wb')
+    # pickle.dump(pointCloud,fileObj)
+    # pickle.dump(rangeResult,fileObj)
+    # pickle.dump(dopplerResult,fileObj)
+    # fileObj.close()
 
 
-    # fileObj = open('pointCloud.pkl', 'rb')
+    # saveObject = (pointCloud,rangeResult,dopplerResult)
+    # fileObj = open('try.pkl', 'wb')
+    # pickle.dump(saveObject,fileObj)
+    # fileObj.close()
+    
+
+    result = {"pointCloud": pointcloud_list, "rangeResult": rangresult_list, "doppelerResult": dopplerresult_list}
+    #print(result)
+    fileobj = open('prd_data.pkl','wb')
+    pickle.dump(result,fileobj)
+    fileobj.close()
+
+
+
+
+
+
+
+
+    # fileObj = open('prd_data.pkl', 'rb')
     # exampleObj = pickle.load(fileObj)
     # fileObj.close()
-    # print(exampleObj)
+    #print(type(exampleObj))
+    #print(exampleObj)
     
     bin_reader.close()
      
