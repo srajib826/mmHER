@@ -228,10 +228,10 @@ def reg_data(data, pc_size):  #
 if __name__ == '__main__':
     raw_poincloud_data_for_plot = []
     bin_filename = sys.argv[1]
-    if len(sys.argv) > 2:
-        total_frame_number = int(sys.argv[2])
-    else:
-        total_frame_number = 3000
+    # if len(sys.argv) > 2:
+    #     total_frame_number = int(sys.argv[2])
+    # else:
+    total_frame_number =int(os.path.getsize(bin_filename)/(4*4*3*256*128))
     pointCloudProcessCFG = PointCloudProcessCFG()
     shift_arr = cfg.MMWAVE_RADAR_LOC
     bin_reader = RawDataReader(bin_filename)
@@ -257,12 +257,13 @@ if __name__ == '__main__':
         frame_no += 1
         #print('Frame %d:' % (frame_no), pointCloud.shape)
         raw_poincloud_data_for_plot.append(pointCloud)
-       # print(type(rangeResult))
-      
+        
+   
+    
 
     result = {"pointCloud": pointcloud_list, "rangeResult": rangresult_list, "doppelerResult": dopplerresult_list}
     #print(result)
-    fileobj = open('prd_data.pkl','wb')
+    fileobj = open('prd_data2.pkl','wb')
     pickle.dump(result,fileobj)
     fileobj.close()
 
